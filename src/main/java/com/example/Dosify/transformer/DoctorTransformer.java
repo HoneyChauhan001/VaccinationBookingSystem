@@ -8,8 +8,6 @@ import com.example.Dosify.repository.CenterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DoctorTransformer {
-    @Autowired
-    CenterRepository centerRepository;
     public static Doctor doctorRequestDtotoDoctor(DoctorRequestDto doctorRequestDto){
         return Doctor.builder()
                 .name(doctorRequestDto.getName())
