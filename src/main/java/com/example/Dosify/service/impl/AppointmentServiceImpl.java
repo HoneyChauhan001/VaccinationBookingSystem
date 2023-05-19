@@ -15,6 +15,8 @@ import com.example.Dosify.service.Dose1Service;
 import com.example.Dosify.service.Dose2Service;
 import com.example.Dosify.transformer.AppointmentTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +32,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     Dose1Service dose1Service;
     @Autowired
     Dose2Service dose2Service;
+    @Autowired
+    private JavaMailSender emailSender;
+
     @Override
     public AppointmentResponseDto bookAppointment(AppointmentRequestDto appointmentRequestDto) throws UserNotExistException, DoctorNotExistException, DoseAlreadyTakenException, Dose1NotTakenException {
         Optional<User> userOpt =  userRepository.findById(appointmentRequestDto.getUserId());
@@ -75,6 +80,14 @@ public class AppointmentServiceImpl implements AppointmentService {
         doctor.getAppointments().add(savedAppointment);
 
         doctorRepository.save(doctor);
+        //sending mail
+        String text = "Congratulations!!" + user.getName() + "user appointment is successfully booked";
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@baeldung.com");
+        message.setTo(user.getEmailId());
+        message.setSubject("Appointment booking status");
+        message.setText(text);
+        emailSender.send(message);
 
         return AppointmentTransformer.appointmentToResponseDto(savedAppointment);
 
