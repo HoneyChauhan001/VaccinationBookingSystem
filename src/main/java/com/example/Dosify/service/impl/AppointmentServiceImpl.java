@@ -17,6 +17,7 @@ import com.example.Dosify.transformer.AppointmentTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,8 +47,9 @@ public class AppointmentServiceImpl implements AppointmentService {
             if(user.isDose1Taken()==true){
                 throw new DoseAlreadyTakenException("dose 1 already taken by user");
             }
-            Dose1 dose1 = dose1Service.createDose(appointmentRequestDto.getVaccineType(),appointmentRequestDto.getUserId());
-
+            Dose1 dose1 = dose1Service.createDose(appointmentRequestDto.getVaccineType(),user);
+            user.setDose1Taken(true);
+            user.setDose1(dose1);
         }
         else {
             if(user.isDose1Taken()==false){
@@ -56,18 +58,25 @@ public class AppointmentServiceImpl implements AppointmentService {
             if(user.isDose2Taken()==true){
                 throw new DoseAlreadyTakenException("dose 2 already taken by user");
             }
-            Dose2 dose2 = dose2Service.createDose(appointmentRequestDto.getVaccineType(),appointmentRequestDto.getUserId());
+            Dose2 dose2 = dose2Service.createDose(appointmentRequestDto.getVaccineType(),user);
+            user.setDose2Taken(true);
+            user.setDose2(dose2);
         }
 
         Appointment appointment = AppointmentTransformer.dtoToAppointment(appointmentRequestDto);
         appointment.setUser(user);
         appointment.setDoctor(doctor);
         user.getAppointments().add(appointment);
-        doctor.getAppointments().add(appointment);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        List<Appointment> appointmentList = savedUser.getAppointments();
+        int size = appointmentList.size();
+        Appointment savedAppointment = appointmentList.get(size-1); // to send saved user with date to Dto
+        doctor.getAppointments().add(savedAppointment);
+
         doctorRepository.save(doctor);
 
-        return AppointmentTransformer.appointmentToResponseDto(appointment);
+        return AppointmentTransformer.appointmentToResponseDto(savedAppointment);
 
     }
 }

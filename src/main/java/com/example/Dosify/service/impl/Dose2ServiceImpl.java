@@ -18,13 +18,9 @@ public class Dose2ServiceImpl implements Dose2Service {
     @Autowired
     UserRepository userRepository;
     @Override
-    public Dose2 createDose(VaccineType vaccineType, int userId) {
-        Optional<User> userOpt =  userRepository.findById(userId);
+    public Dose2 createDose(VaccineType vaccineType, User user) {
         //create dose
-        Dose2 dose2 = Dose2Transformer.dtoToDose2(vaccineType,userOpt.get());
-        User user = userOpt.get();
-        user.setDose2Taken(true);
-        user.setDose2(dose2);
+        Dose2 dose2 = Dose2Transformer.dtoToDose2(vaccineType,user);
         return dose2;
     }
 }

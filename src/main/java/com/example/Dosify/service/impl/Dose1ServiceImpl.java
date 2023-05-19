@@ -13,16 +13,10 @@ import java.util.Optional;
 
 @Service
 public class Dose1ServiceImpl implements Dose1Service {
-    @Autowired
-    UserRepository userRepository;
     @Override
-    public Dose1 createDose(VaccineType vaccineType, int userId) {
-        Optional<User> userOpt =  userRepository.findById(userId);
+    public Dose1 createDose(VaccineType vaccineType, User user) {
         //create dose
-        Dose1 dose1 = Dose1Transformer.dtoToDose1(vaccineType,userOpt.get());
-        User user = userOpt.get();
-        user.setDose1Taken(true);
-        user.setDose1(dose1);
+        Dose1 dose1 = Dose1Transformer.dtoToDose1(vaccineType,user);
         return dose1;
     }
 }
