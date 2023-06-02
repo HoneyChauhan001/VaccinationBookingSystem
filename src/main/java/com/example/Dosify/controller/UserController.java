@@ -1,5 +1,6 @@
 package com.example.Dosify.controller;
 
+import com.example.Dosify.Enum.Gender;
 import com.example.Dosify.dto.requestDTO.UserRequestDto;
 import com.example.Dosify.dto.responseDTO.userInfoResponseDto;
 import com.example.Dosify.dto.responseDTO.UpdateNameByMobNoDto;
@@ -56,6 +57,12 @@ public class UserController {
     @GetMapping("/male-users-with-no-dose-taken")
     public ResponseEntity getMaleUsersWithNoDoseTaken(){
         UserNameListDto userList = userService.getMaleUsersWithNoDoseTaken();
+        return new ResponseEntity(userList,HttpStatus.OK);
+    }
+
+    @GetMapping("/gender/{gender}/is-dose1-taken/{isDose1Taken}/is-dose2-taken/{isDose2Taken}")
+    public ResponseEntity getUserWithGenderAndDoseStatus(@PathVariable Gender gender, @PathVariable boolean isDose1Taken, @PathVariable boolean isDose2Taken){
+        UserNameListDto userList = userService.getUserWithGenderAndDoseStatus(gender,isDose1Taken,isDose2Taken);
         return new ResponseEntity(userList,HttpStatus.OK);
     }
 }

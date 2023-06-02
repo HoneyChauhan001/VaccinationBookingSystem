@@ -1,5 +1,6 @@
 package com.example.Dosify.service;
 
+import com.example.Dosify.Enum.Gender;
 import com.example.Dosify.dto.requestDTO.UserRequestDto;
 import com.example.Dosify.dto.responseDTO.userInfoResponseDto;
 import com.example.Dosify.dto.responseDTO.UpdateNameByMobNoDto;
@@ -20,4 +21,6 @@ public interface UserService {
     UserNameListDto getUsersWithBothDoseTaken();
 
     UserNameListDto getMaleUsersWithNoDoseTaken();
+
+    UserNameListDto getUserWithGenderAndDoseStatus(Gender gender, boolean isDose1Taken, boolean isDose2Taken);
 }
