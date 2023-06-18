@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     List<User> findByIsDose1TakenAndIsDose2Taken(boolean isDose1Taken, boolean isDose2Taken);
 
     List<User> findByIsDose1TakenAndIsDose2TakenAndGender(boolean isDose1Taken, boolean isDose2Taken, Gender gender);
+
+
 }
