@@ -20,4 +20,6 @@ public interface DoctorService {
     List<DoctorResponseDto> getDoctorWithGenderAndAgeMoreThan(Gender gender, int age) throws DoctorNotExistException;
 
     double getRatioOfFemaleToMale() throws MaleDoctorNotPresentException, FemaleDoctorNotPresentException;
+
+    void updateDoctorCenter(String emailId, int centerId) throws DoctorNotExistException, CenterNotExistException;
 }

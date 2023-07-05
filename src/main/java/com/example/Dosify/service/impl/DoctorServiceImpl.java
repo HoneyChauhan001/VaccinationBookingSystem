@@ -122,5 +122,28 @@ public class DoctorServiceImpl implements DoctorService {
         return (females * 1.0)/males;
     }
 
+    @Override
+    public void updateDoctorCenter(String emailId, int centerId) throws DoctorNotExistException, CenterNotExistException {
+        Doctor doctor = doctorRepository.findByEmailId(emailId);
+        if(doctor == null){
+            throw new DoctorNotExistException("No doctor with following emailId");
+        }
+        Optional<VaccinationCenter> centerOpt = centerRepository.findById(centerId);
+        if(centerOpt.isEmpty()){
+            throw new CenterNotExistException("No center with following center ID");
+        }
+
+        VaccinationCenter center = centerOpt.get();
+
+        doctor.getVaccinationCenter().getDoctors().remove(doctor);
+
+        doctor.setVaccinationCenter(center);
+        center.getDoctors().add(doctor);
+
+        centerRepository.save(center);
+
+        return;
+    }
+
 
 }

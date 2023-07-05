@@ -15,4 +15,6 @@ public interface DoctorRepository extends JpaRepository<Doctor,Integer> {
     List<Doctor> getDoctorWithGenderAndAgeMoreThan(String gender, int age);
 
     List<Doctor> findByGender(Gender gender);
+
+    Doctor findByEmailId(String emailId);
 }

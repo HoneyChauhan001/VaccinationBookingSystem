@@ -30,6 +30,19 @@ public class DoctorController {
         }
     }
 
+    @PutMapping("/update-doctor-center")
+    public ResponseEntity updateDoctorCenter(@RequestParam String emailId, @RequestParam int centerId){
+        try{
+            doctorService.updateDoctorCenter(emailId,centerId);
+            return new ResponseEntity("Doctor center updated succefully",HttpStatus.OK);
+        }catch (DoctorNotExistException e) {
+            return new ResponseEntity(e.getMessage(),HttpStatus.NOT_FOUND);
+        } catch (CenterNotExistException e) {
+            return new ResponseEntity(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+
+
+    }
 
     @GetMapping("/appointment-more-than/{numberOfAppointments}")
     public ResponseEntity GetDoctorWithAppointmentMoreThan(@PathVariable int numberOfAppointments){
